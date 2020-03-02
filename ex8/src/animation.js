@@ -359,11 +359,11 @@ class Sprite extends React.Component {
                 onMouseOut={this.onMouseOut.bind(this)}
                 onClick={this.onClick.bind(this)}
                 style={{
-                    imageRendering="pixelated",
+                    imageRendering:"pixelated",
                     width: 64,
                     height: 96,
                     borderRadius: 8,
-                    backgroundColor: hovered ? "rgb(24,35,56)" : null,
+                    backgroundColor: (hovered ? "rgb(24,35,56)" : null),
                     transition: "all 0.3s ease-in-out"
                 }} />
                 {
