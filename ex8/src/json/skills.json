@@ -1,0 +1,180 @@
+{
+    "crouch": {
+        "name": "웅크리기",
+        "description": "웅크려 앉아 맞는다. 방어력이 20% 증가한다.",
+        "skillExpressions": [
+            [
+                "armorCoefficient(0.2)"
+            ]
+        ]
+    },
+
+    "runaway": {
+        "name": "도주",
+        "description": "전투에서 빠져나와 몸을 숨긴다.",
+        "coolTime": 10,
+        "maxCoolTime": 10,
+        "skillExpressions": []
+    },
+
+    "slash": {
+        "name": "베기",
+        "description": "평범한 검격을 날린다.",
+        "skillExpressions": [
+            [
+                "attackCoefficient(1.0)"
+            ]
+        ]
+    },
+
+    "bleedslash": {
+        "name": "출혈베기",
+        "description": "깊게 베어 출혈을 유도한다.",
+        "coolTime": 8,
+        "maxCoolTime": 8,
+        "skillExpressions": [
+            [
+                "attackCoefficient(1)"
+            ],
+            [
+                "attackCoefficient(0.1)"
+            ]
+        ]
+    },
+
+    "shieldattack": {
+        "name": "방패공격",
+        "description": "방패로 공격한다.",
+        "skillExpressions": [
+            [
+                "attackCoefficient(0.9)"
+            ]
+        ]
+    },
+
+    "doubleattack": {
+        "name": "연속공격",
+        "description": "방패와 검으로 연속 공격하고 방어력을 10% 증가시킨다.",
+        "coolTime": 7,
+        "maxCoolTime": 7,
+        "skillExpressions": [
+            [
+                "attackCoefficient(0.85)"
+            ],
+            [
+                "attackCoefficient(1.0)"
+            ],
+            [
+                "armorCoefficient(0.1)"
+            ]
+        ]
+    },
+
+    "wandattack": {
+        "name": "마력공격",
+        "description": "완드에 마력을 실어 가격한다.",
+        "skillExpressions": [
+            [
+                "magicCoefficient(0.9)"
+            ]
+        ]
+    },
+    "antipower": {
+        "name": "안티파워",
+        "description": "적의 공격력을 10%만큼 낮춘다.",
+        "skillExpressions": [
+            [
+                "attackCoefficient(0.1)"
+            ]
+        ]
+    },
+    
+    "heal": {
+        "name": "힐",
+        "description": "아군의 체력을 15%만큼 회복한다.",
+        "coolTime": 10,
+        "maxCoolTime": 10,
+        "skillExpressions": [
+            [
+                "maxHealthCoefficient(0.15)"
+            ]
+        ]
+    },
+
+    "shotarrow": {
+        "name": "화살공격",
+        "description": "화살을 쏴 후방의 적을 공격한다.",
+        "skillExpressions": [
+            [
+                "attackCoefficient(1.1)"
+            ]
+        ]
+    },
+
+    "criticalattack": {
+        "name": "단검공격",
+        "description": "단검으로 치명적인 일격을 가한다.",
+        "skillExpressions": [
+            [
+                "attackCoefficient(1.05)"
+            ]
+        ]
+    },
+
+    "arrowoftracker": {
+        "name": "추적화살",
+        "description": "활을 높게 쏘아올려 제일 체력이 약한적을 공격한다.",
+        "coolTime": 8,
+        "maxCoolTime": 8,
+        "skillExpressions": [
+            [
+                "attackCoefficient(1.2)"
+            ]
+        ]
+    },
+
+    "firebolt": {
+        "name": "파이어볼",
+        "description": "전방의 적에게 화염구체를 날려 공격한다.",
+        "skillExpressions": [
+            [
+                "magicCoefficient(1.2)"
+            ]
+        ]
+    },
+
+    "firecape": {
+        "name": "화염망토",
+        "description": "화염망토를 둘러 방어력을 20% 증가시킨다.",
+        "skillExpressions": [
+            [
+                "armorCoefficient(0.2)"
+            ]
+        ]
+    },
+    
+    "firerain": {
+        "name": "화염의 비",
+        "description": "모든 적에게 화염구체를 떨어뜨려 공격한다.",
+        "coolTime": 9,
+        "maxCoolTime": 9,
+        "skillExpressions": [
+            [
+                "magicCoefficient(0.85)"
+            ]
+        ]
+    },
+    
+    "breath": {
+        "name": "용의 입김",
+        "description": "모든 적에게 화염방사한다.",
+        "coolTime": 10,
+        "maxCoolTime": 10,
+        "skillExpressions": [
+            [
+                "magicCoefficient(0.5)",
+                "magic(20)"
+            ]
+        ]
+    }
+}

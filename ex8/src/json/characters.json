@@ -1,0 +1,796 @@
+﻿{
+    "1": {
+        "id": "1",
+        "name": "hector",
+        "displayname": "헥터",
+        "class": "warrior",
+        "portrait": "player1_square.png",
+        "battleportrait": "player1_active.png",
+        "base": {
+            "health": 200,
+            "strength": 5,
+            "intellect": 5,
+            "agility": 5,
+            "stamina": 5,
+            "speed": 1,
+            "critical": 0.1
+        },
+        "levelup": {
+            "health": 10,
+            "strength": 0.55,
+            "intellect": 0.4,
+            "agility": 0.5,
+            "stamina": 0.5,
+            "speed": 0.05,
+            "critical": 0.004
+        },
+        "skills": {
+            "a": "slash",
+            "b": "crouch",
+            "extra": "runaway"
+        },
+        "skillactiveprobability": 0,
+        "offset": {
+            "x": 0,
+            "y": -48
+        },
+        "animations": {
+            "hector_idle_sw": {
+                "length": 2
+            },
+            "hector_idle_nw": {
+                "length": 2
+            },
+            "hector_walk_sw": {
+                "length": 8
+            },
+            "hector_walk_nw": {
+                "length": 8
+            },
+            "hector_atk_sw": {
+                "length": 10
+            },
+            "hector_atk_nw": {
+                "length": 10
+            },
+            "hector_crouch_sw": {
+                "length": 1
+            },
+            "hector_crouch_nw": {
+                "length": 1
+            }
+        }
+    },
+    "2": {
+        "id": "2",
+        "name": "warrior",
+        "displayname": "전사",
+        "class": "warrior",
+        "portrait": "player5_square.png",
+        "battleportrait": "player5_active.png",
+        "base": {
+            "health": 250,
+            "strength": 12,
+            "intellect": 5,
+            "agility": 8,
+            "stamina": 8,
+            "speed": 1,
+            "critical": 0.1
+        },
+        "levelup": {
+            "health": 20,
+            "strength": 0.7,
+            "intellect": 0.4,
+            "agility": 0.4,
+            "stamina": 0.6,
+            "speed": 0.05,
+            "critical": 0.004
+        },
+        "skills": {
+            "a": "slash",
+            "b": "shieldattack",
+            "extra": "doubleattack"
+        },
+        "skillactiveprobability": 0,
+        "offset": {
+            "x": 0,
+            "y": -48
+        },
+        "animations": {
+            "warrior_idle_sw": {
+                "length": 1
+            },
+            "warrior_idle_nw": {
+                "length": 1
+            },
+            "warrior_walk_sw": {
+                "length": 8
+            },
+            "warrior_walk_nw": {
+                "length": 8
+            },
+            "warrior_atk_sw": {
+                "length": 10
+            },
+            "warrior_atk_nw": {
+                "length": 10
+            },
+            "warrior_atk_2_sw": {
+                "length": 7
+            },
+            "warrior_atk_2_nw": {
+                "length": 7
+            }
+        }
+    },
+    "3": {
+        "id": "3",
+        "name": "healer",
+        "displayname": "힐러",
+        "class": "healer",
+        "portrait": "player4_square.png",
+        "battleportrait": "player4_active.png",
+        "base": {
+            "health": 130,
+            "strength": 4,
+            "intellect": 12,
+            "agility": 6,
+            "stamina": 6,
+            "speed": 1,
+            "critical": 0.1
+        },
+        "levelup": {
+            "health": 7,
+            "strength": 0.4,
+            "intellect": 0.7,
+            "agility": 0.3,
+            "stamina": 0.3,
+            "speed": 0.05,
+            "critical": 0.004
+        },
+        "skills": {
+            "a": "wandattack",
+            "b": "antipower",
+            "extra": "heal"
+        },
+        "skillactiveprobability": 0,
+        "offset": {
+            "x": 0,
+            "y": -48
+        },
+        "animations": {
+            "healer_idle_sw": {
+                "length": 1
+            },
+            "healer_idle_nw": {
+                "length": 1
+            },
+            "healer_walk_sw": {
+                "length": 8
+            },
+            "healer_walk_nw": {
+                "length": 8
+            },
+            "healer_atk_sw": {
+                "length": 7
+            },
+            "healer_atk_nw": {
+                "length": 7
+            },
+            "healer_magic_sw": {
+                "length": 7
+            },
+            "healer_magic_nw": {
+                "length": 7
+            }
+        }
+    },
+    "4": {
+        "id": "4",
+        "name": "miluda",
+        "displayname": "궁수",
+        "class": "archer",
+        "portrait": "player3_square.png",
+        "battleportrait": "player3_active.png",
+        "base": {
+            "health": 160,
+            "strength": 8,
+            "intellect": 6,
+            "agility": 15,
+            "stamina": 6,
+            "speed": 1.1,
+            "critical": 0.1
+        },
+        "levelup": {
+            "health": 12,
+            "strength": 0.6,
+            "intellect": 0.5,
+            "agility": 0.7,
+            "stamina": 0.5,
+            "speed": 0.06,
+            "critical": 0.004
+        },
+        "skills": {
+            "a": "shotarrow",
+            "b": "criticalattack",
+            "extra": "arrowoftracker"
+        },
+        "skillactiveprobability": 0,
+        "offset": {
+            "x": 0,
+            "y": -48
+        },
+        "animations": {
+            "miluda_idle_sw": {
+                "length": 1
+            },
+            "miluda_idle_nw": {
+                "length": 1
+            },
+            "miluda_walk_sw": {
+                "length": 8
+            },
+            "miluda_walk_nw": {
+                "length": 8
+            },
+            "miluda_atk_sw": {
+                "length": 8
+            },
+            "miluda_atk_nw": {
+                "length": 8
+            }
+        }
+    },
+    "5": {
+        "id": "5",
+        "name": "elid",
+        "displayname": "마법사",
+        "class": "wizard",
+        "portrait": "player2_square.png",
+        "battleportrait": "player2_active.png",
+        "base": {
+            "health": 130,
+            "strength": 5,
+            "intellect": 15,
+            "agility": 5,
+            "stamina": 5,
+            "speed": 1,
+            "critical": 0.1
+        },
+        "levelup": {
+            "health": 7,
+            "strength": 0.4,
+            "intellect": 0.7,
+            "agility": 0.4,
+            "stamina": 0.3,
+            "speed": 0.05,
+            "critical": 0.004
+        },
+        "skills": {
+            "a": "firebolt",
+            "b": "firecape",
+            "extra": "firerain"
+        },
+        "skillactiveprobability": 0,
+        "offset": {
+            "x": 0,
+            "y": -48
+        },
+        "animations": {
+            "elid_idle_sw": {
+                "length": 1
+            },
+            "elid_idle_nw": {
+                "length": 1
+            },
+            "elid_walk_sw": {
+                "length": 8
+            },
+            "elid_walk_nw": {
+                "length": 8
+            },
+            "elid_atk_sw": {
+                "length": 7
+            },
+            "elid_atk_nw": {
+                "length": 7
+            }
+        }
+    },
+    "6": {
+        "id": "6",
+        "name": "assassin",
+        "displayname": "암살자",
+        "class": "assassin",
+        "portrait": "player6_square.png",
+        "battleportrait": "player6_active.png",
+        "base": {
+            "health": 160,
+            "strength": 9,
+            "intellect": 5,
+            "agility": 14,
+            "stamina": 8,
+            "speed": 1.1,
+            "critical": 0.1
+        },
+        "levelup": {
+            "health": 15,
+            "strength": 0.5,
+            "intellect": 0.4,
+            "agility": 0.9,
+            "stamina": 0.6,
+            "speed": 0.06,
+            "critical": 0.004
+        },
+        "skills": {
+            "a": "slash",
+            "b": "criticalattack",
+            "extra": "bleedslash"
+        },
+        "skillactiveprobability": 0,
+        "offset": {
+            "x": 0,
+            "y": -48
+        },
+        "animations": {
+            "assassin_idle_sw": {
+                "length": 1
+            },
+            "assassin_idle_nw": {
+                "length": 1
+            },
+            "assassin_walk_sw": {
+                "length": 8
+            },
+            "assassin_walk_nw": {
+                "length": 8
+            },
+            "assassin_atk_sw": {
+                "length": 10
+            },
+            "assassin_atk_nw": {
+                "length": 10
+            }
+        }
+    },
+    "10001": {
+        "id": "10001",
+        "name": "soldier",
+        "displayname": "도굴꾼",
+        "class": "warrior",
+        "portrait": "",
+        "base": {
+            "health": 100,
+            "strength": 5,
+            "intellect": 4,
+            "agility": 4,
+            "stamina": 8,
+            "speed": 1,
+            "critical": 0.05
+        },
+        "levelup": {
+            "health": 30,
+            "strength": 2.1,
+            "intellect": 2.1,
+            "agility": 0.8,
+            "stamina": 3.5,
+            "speed": 0.05,
+            "critical": 0.004
+        },
+        "skills": {
+            "a": "slash",
+            "b": "bleedslash",
+            "extra": ""
+        },
+        "skillactiveprobability": 0,
+        "offset": {
+            "x": 0,
+            "y": -48
+        },
+        "animations": {
+            "soldier_idle_sw": {
+                "length": 1
+            },
+            "soldier_idle_nw": {
+                "length": 1
+            },
+            "soldier_walk_sw": {
+                "length": 8
+            },
+            "soldier_walk_nw": {
+                "length": 8
+            },
+            "soldier_atk_sw": {
+                "length": 10
+            },
+            "soldier_atk_nw": {
+                "length": 10
+            }
+        }
+    },
+    "10002": {
+        "id": "10002",
+        "name": "skeleton",
+        "displayname": "해골기사",
+        "class": "warrior",
+        "portrait": "",
+        "base": {
+            "health": 80,
+            "strength": 5,
+            "intellect": 4,
+            "agility": 4,
+            "stamina": 8,
+            "speed": 1,
+            "critical": 0.05
+        },
+        "levelup": {
+            "health": 30,
+            "strength": 2.1,
+            "intellect": 2.1,
+            "agility": 0.8,
+            "stamina": 3.5,
+            "speed": 0.05,
+            "critical": 0.004
+        },
+        "skills": {
+            "a": "slash",
+            "b": "criticalattack",
+            "extra": ""
+        },
+        "skillactiveprobability": 0,
+        "offset": {
+            "x": 0,
+            "y": -48
+        },
+        "animations": {
+            "skeleton_idle_sw": {
+                "length": 1
+            },
+            "skeleton_idle_nw": {
+                "length": 1
+            },
+            "skeleton_walk_sw": {
+                "length": 8
+            },
+            "skeleton_walk_nw": {
+                "length": 8
+            },
+            "skeleton_atk_sw": {
+                "length": 10
+            },
+            "skeleton_atk_nw": {
+                "length": 10
+            }
+        }
+    },
+    "10003": {
+        "id": "10003",
+        "name": "ghost",
+        "displayname": "네크로멘서",
+        "class": "warrior",
+        "portrait": "",
+        "base": {
+            "health": 60,
+            "strength": 7,
+            "intellect": 7,
+            "agility": 7,
+            "stamina": 5,
+            "speed": 1,
+            "critical": 0.05
+        },
+        "levelup": {
+            "health": 25,
+            "strength": 2.5,
+            "intellect": 2.5,
+            "agility": 1,
+            "stamina": 2.5,
+            "speed": 0.05,
+            "critical": 0.004
+        },
+        "skills": {
+            "a": "slash",
+            "b": "criticalattack",
+            "extra": ""
+        },
+        "skillactiveprobability": 0,
+        "offset": {
+            "x": 0,
+            "y": -48
+        },
+        "animations": {
+            "ghost_idle_sw": {
+                "length": 1
+            },
+            "ghost_idle_nw": {
+                "length": 1
+            },
+            "ghost_walk_sw": {
+                "length": 8
+            },
+            "ghost_walk_nw": {
+                "length": 8
+            },
+            "ghost_atk_sw": {
+                "length": 10
+            },
+            "ghost_atk_nw": {
+                "length": 10
+            }
+        }
+    },
+    "10004": {
+        "id": "10004",
+        "name": "frogknight",
+        "displayname": "개굴전사",
+        "class": "warrior",
+        "portrait": "",
+        "base": {
+            "health": 110,
+            "strength": 4,
+            "intellect": 4,
+            "agility": 4,
+            "stamina": 8,
+            "speed": 1,
+            "critical": 0.05
+        },
+        "levelup": {
+            "health": 45,
+            "strength": 1.8,
+            "intellect": 1.8,
+            "agility": 0.9,
+            "stamina": 3.5,
+            "speed": 0.05,
+            "critical": 0.004
+        },
+        "skills": {
+            "a": "slash",
+            "b": "shotarrow",
+            "extra": ""
+        },
+        "skillactiveprobability": 0,
+        "offset": {
+            "x": 0,
+            "y": -48
+        },
+        "animations": {
+            "frogknight_idle_sw": {
+                "length": 1
+            },
+            "frogknight_idle_nw": {
+                "length": 1
+            },
+            "frogknight_walk_sw": {
+                "length": 8
+            },
+            "frogknight_walk_nw": {
+                "length": 8
+            },
+            "frogknight_atk_sw": {
+                "length": 10
+            },
+            "frogknight_atk_nw": {
+                "length": 10
+            }
+        }
+    },
+    "10005": {
+        "id": "10005",
+        "name": "dknight",
+        "displayname": "암흑기사",
+        "class": "warrior",
+        "portrait": "",
+        "base": {
+            "health": 120,
+            "strength": 4,
+            "intellect": 4,
+            "agility": 4,
+            "stamina": 9,
+            "speed": 1,
+            "critical": 0.05
+        },
+        "levelup": {
+            "health": 60,
+            "strength": 1.2,
+            "intellect": 1.2,
+            "agility": 0.8,
+            "stamina": 4.5,
+            "speed": 0.05,
+            "critical": 0.004
+        },
+        "skills": {
+            "a": "slash",
+            "b": "bleedslash",
+            "extra": ""
+        },
+        "skillactiveprobability": 0,
+        "offset": {
+            "x": 0,
+            "y": -48
+        },
+        "animations": {
+            "dknight_idle_sw": {
+                "length": 1
+            },
+            "dknight_idle_nw": {
+                "length": 1
+            },
+            "dknight_walk_sw": {
+                "length": 8
+            },
+            "dknight_walk_nw": {
+                "length": 8
+            },
+            "dknight_atk_sw": {
+                "length": 10
+            },
+            "dknight_atk_nw": {
+                "length": 10
+            }
+        }
+    },
+    "10006": {
+        "id": "10006",
+        "name": "doga",
+        "displayname": "수도사",
+        "class": "warrior",
+        "portrait": "",
+        "base": {
+            "health": 100,
+            "strength": 5,
+            "intellect": 4,
+            "agility": 4,
+            "stamina": 8,
+            "speed": 1,
+            "critical": 0.05
+        },
+        "levelup": {
+            "health": 30,
+            "strength": 2.1,
+            "intellect": 2.5,
+            "agility": 0.8,
+            "stamina": 3.5,
+            "speed": 0.05,
+            "critical": 0.004
+        },
+        "skills": {
+            "a": "firebolt",
+            "b": "firebolt",
+            "extra": ""
+        },
+        "skillactiveprobability": 0,
+        "offset": {
+            "x": 0,
+            "y": -48
+        },
+        "animations": {
+            "doga_idle_sw": {
+                "length": 1
+            },
+            "doga_idle_nw": {
+                "length": 1
+            },
+            "doga_walk_sw": {
+                "length": 8
+            },
+            "doga_walk_nw": {
+                "length": 8
+            },
+            "doga_atk_sw": {
+                "length": 10
+            },
+            "doga_atk_nw": {
+                "length": 10
+            }
+        }
+    },
+    "10007": {
+        "id": "10007",
+        "name": "lucavi",
+        "displayname": "스켈레톤",
+        "class": "wizard",
+        "portrait": "",
+        "base": {
+            "health": 100,
+            "strength": 5,
+            "intellect": 5,
+            "agility": 4,
+            "stamina": 8,
+            "speed": 1,
+            "critical": 0.05
+        },
+        "levelup": {
+            "health": 30,
+            "strength": 2.1,
+            "intellect": 2.1,
+            "agility": 0.8,
+            "stamina": 3.5,
+            "speed": 0.05,
+            "critical": 0.004
+        },
+        "skills": {
+            "a": "shotarrow",
+            "b": "shotarrow",
+            "extra": ""
+        },
+        "skillactiveprobability": 0,
+        "offset": {
+            "x": 0,
+            "y": -48
+        },
+        "animations": {
+            "lucavi_idle_sw": {
+                "length": 1
+            },
+            "lucavi_idle_nw": {
+                "length": 1
+            },
+            "lucavi_walk_sw": {
+                "length": 8
+            },
+            "lucavi_walk_nw": {
+                "length": 8
+            },
+            "lucavi_atk_sw": {
+                "length": 10
+            },
+            "lucavi_atk_nw": {
+                "length": 10
+            }
+        }
+    },
+    "10008": {
+        "id": "10008",
+        "name": "dragon",
+        "displayname": "용",
+        "class": "wizard",
+        "portrait": "",
+        "base": {
+            "health": 100,
+            "strength": 7,
+            "intellect": 4,
+            "agility": 4,
+            "stamina": 4,
+            "speed": 5,
+            "critical": 0.08
+        },
+        "levelup": {
+            "health": 250,
+            "strength": 1.85,
+            "intellect": 2.1,
+            "agility": 0.8,
+            "stamina": 4.5,
+            "speed": 0.15,
+            "critical": 0.004
+        },
+        "skills": {
+            "a": "criticalattack",
+            "b": "criticalattack",
+            "extra": "breath"
+        },
+        "skillactiveprobability": 1,
+        "offset": {
+            "x": -140,
+            "y": -258
+        },
+        "animations": {
+            "dragon_idle_sw": {
+                "length": 7
+            },
+            "dragon_idle_nw": {
+                "length": 7
+            },
+            "dragon_walk_sw": {
+                "length": 7
+            },
+            "dragon_walk_nw": {
+                "length": 7
+            },
+            "dragon_atk_sw": {
+                "length": 9
+            },
+            "dragon_atk_nw": {
+                "length": 9
+            }
+        }
+    }
+}
