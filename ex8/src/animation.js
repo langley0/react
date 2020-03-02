@@ -1,8 +1,6 @@
 import React from "react";
 
 const skills = require("./json/skills.json");
-console.log(skills);
-
 const AssetPath = "./assets/";
 const ShadowPath = "./assets/shadow.png";
 const AnimList = [
@@ -198,6 +196,7 @@ class Sprite extends React.Component {
 
         this.canvas = null;
         this.name = null;
+        this.delayPlay = null;
     }
 
     async load(name) {
@@ -312,7 +311,9 @@ class Sprite extends React.Component {
             currentAnim: Object.keys(this.state.data)[2],
             currentFrame: 0
          }, () => {
-            this.play();
+            if (!this.delayPlay) {
+                this.delayPlay = setTimeout(this.play.bind(this), 500);
+            }
          });
     }
 
@@ -328,6 +329,8 @@ class Sprite extends React.Component {
         }, () => {
             this.stop();
             this.draw();
+            clearTimeout(this.delayPlay);
+            this.delayPlay = null;
         })
     }
 
@@ -350,7 +353,7 @@ class Sprite extends React.Component {
     render() {
         const { hovered } = this.state;
         return (
-            <div style={{display: "flex", width:68, margin:10, flexDirection:"column", alignItems:"left"}}>
+            <div style={{display: "flex", width:68, margin:10, flexDirection:"column", alignItems:"left", cursor: "pointer"}}>
                 <canvas 
                 ref={ref => { this.canvas = ref; }} 
                 width={32} 
@@ -364,7 +367,8 @@ class Sprite extends React.Component {
                     height: 96,
                     borderRadius: 8,
                     backgroundColor: (hovered ? "rgb(24,35,56)" : null),
-                    transition: "all 0.3s ease-in-out"
+                    transform: (hovered ? "translate(0, -5px)" : null),
+                    transition: "all 0.3s ease-in-out",
                 }} />
                 {
                     <div style={{ 
