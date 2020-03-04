@@ -1,0 +1,102 @@
+/**
+ *	@package    vscode-dark theme
+ *	@version    1.0.0
+ *	@author		  Inter-Net PRO
+ *	@link       https://inter-net.pro
+ *	@github     https://github.com/Inter-Net-Pro/Theme-VSCode-Dark
+ */
+/* .cm-s-vscode-dark span.cm-meta {color: #569cd6}
+ .cm-s-vscode-dark span.cm-number {color: #b5cea8}
+ .cm-s-vscode-dark span.cm-keyword {line-height: 1em; font-weight: bold; color: #569cd6;}
+ .cm-s-vscode-dark span.cm-def {color:#9cdcfe}
+ .cm-s-vscode-dark span.cm-variable {color: #ddd6a3}
+ .cm-s-vscode-dark span.cm-variable-2 {color: #9cdcfe}
+ .cm-s-vscode-dark span.cm-variable-3,
+ .cm-s-vscode-dark span.cm-type {color: #A9B7C6}
+ .cm-s-vscode-dark span.cm-property {color: #9cdcfe}
+ .cm-s-vscode-dark span.cm-operator {color: #d4d4d4}
+ .cm-s-vscode-dark span.cm-string {color: #ce9178}
+ .cm-s-vscode-dark span.cm-string-2 {color: #6A8759}
+ .cm-s-vscode-dark span.cm-comment {color: #6A9955}
+ .cm-s-vscode-dark span.cm-link {color: #287BDE}
+ .cm-s-vscode-dark span.cm-atom {color: #569cd6}
+ .cm-s-vscode-dark span.cm-error {color: #BC3F3C}
+ .cm-s-vscode-dark span.cm-tag {color: #569cd6}
+ .cm-s-vscode-dark span.cm-attribute {color: #9cdcfe}
+ .cm-s-vscode-dark span.cm-qualifier {color: #d7ba7d}
+ .cm-s-vscode-dark span.cm-bracket {color: #808080}
+ 
+ .cm-s-vscode-dark.CodeMirror {background: #1e1e1e; color: #e9e9e9;}
+ .cm-s-vscode-dark .CodeMirror-cursor {border-left: 1px solid #bebebe;}
+ .CodeMirror-activeline-background {background: #3A3A3A;}
+ .cm-s-vscode-dark div.CodeMirror-selected {background: #1e496c}
+ .cm-s-vscode-dark .CodeMirror-gutters {background: #252526; border-right: 1px solid grey; color: #606366}
+ .cm-s-vscode-dark span.cm-builtin {color: #A9B7C6;}
+ .cm-s-vscode-dark {font-family: Consolas, 'Courier New', monospace, serif;}
+ .cm-s-vscode-dark .CodeMirror-matchingbracket {background-color: #3b514d; color: yellow !important;}
+ 
+ .CodeMirror-hints.vscode-dark {
+   font-family: Consolas, 'Courier New', monospace;
+   color: #9c9e9e;
+   background-color: #3b3e3f !important;
+ }
+ 
+ .CodeMirror-hints.vscode-dark .CodeMirror-hint-active {
+   background-color: #494d4e !important;
+   color: #9c9e9e !important;
+ }*/
+
+ /*
+    Name:       oceanic-next
+    Author:     Filype Pereira (https://github.com/fpereira1)
+    Original oceanic-next color scheme by Dmitri Voronianski (https://github.com/voronianski/oceanic-next-color-scheme)
+*/
+
+.cm-s-oceanic.CodeMirror { 
+  background: rgb(21,21,21); 
+  color: #f8f8f2; 
+  font-weight: 500; 
+  line-height: 1.6;
+  font-family: "Source Code Pro", monospace;
+}
+
+.cm-s-oceanic div.CodeMirror-selected { background: rgba(101, 115, 126, 0.33); }
+.cm-s-oceanic .CodeMirror-line::selection, .cm-s-oceanic .CodeMirror-line > span::selection, .cm-s-oceanic .CodeMirror-line > span > span::selection { background: rgba(101, 115, 126, 0.33); }
+.cm-s-oceanic .CodeMirror-line::-moz-selection, .cm-s-oceanic .CodeMirror-line > span::-moz-selection, .cm-s-oceanic .CodeMirror-line > span > span::-moz-selection { background: rgba(101, 115, 126, 0.33); }
+.cm-s-oceanic .CodeMirror-gutters { background: rgb(21, 21, 21);  border-right: 0px; }
+.cm-s-oceanic .CodeMirror-guttermarker { color: white; }
+.cm-s-oceanic .CodeMirror-guttermarker-subtle { color: #d0d0d0; }
+.cm-s-oceanic .CodeMirror-linenumber { color: rgb(36, 36,36); }
+.cm-s-oceanic .CodeMirror-cursor { border-left: 1px solid #f8f8f0; }
+
+.cm-s-oceanic span.cm-comment { color: #65737E; }
+.cm-s-oceanic span.cm-atom { color: #C594C5; }
+.cm-s-oceanic span.cm-number { color: #F99157; }
+
+.cm-s-oceanic span.cm-attribute { color: rgb(209, 154, 102); }
+.cm-s-oceanic span.cm-keyword { color: rgb(198, 120, 221); }
+.cm-s-oceanic span.cm-builtin { color: #66d9ef; }
+.cm-s-oceanic span.cm-string { color: rgb(152, 195, 121); }
+
+.cm-s-oceanic span.cm-variable { color: rgb(255, 193, 112); }
+.cm-s-oceanic span.cm-variable-2,
+.cm-s-oceanic span.cm-variable-3 { color: #f8f8f2; }
+.cm-s-oceanic span.cm-def { color: rgb(171, 178, 191); }
+.cm-s-oceanic span.cm-bracket { color: #5FB3B3; }
+.cm-s-oceanic span.cm-tag { color: rgb(224, 108, 117); }
+.cm-s-oceanic span.cm-header { color: #C594C5; }
+.cm-s-oceanic span.cm-link { color: #C594C5; }
+.cm-s-oceanic span.cm-error { background: #C594C5; color: #f8f8f0; }
+
+.cm-s-oceanic .CodeMirror-activeline-background { background: rgba(101, 115, 126, 0.33); }
+.cm-s-oceanic .CodeMirror-matchingbracket {
+  text-decoration: underline;
+  color: white !important;
+}
+.cm-s-oceanic span.CodeMirror-matchingtag {  background-color: inherit; }
+.cm-s-oceanic span.cm-tag.CodeMirror-matchingtag { text-decoration: underline; }
+.cm-s-oceanic span.cm-tag.cm-bracket.CodeMirror-matchingtag {  text-decoration: none; }
+
+text {
+  color: #0cc;
+}
