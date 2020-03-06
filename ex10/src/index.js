@@ -151,8 +151,10 @@ class App extends React.Component {
 render() {
     return (
 <div>
-<h1>Hello CodeSandbox</h1>
-<h2>Start editing to see some magic happen!</h2>
+<h1>다음과 같은 기술이 사용되었습니다</h1>
+<h2>CodeMirror Editor</h2>
+<h2>Babel runtime transform</h2>
+<h2>Custom Live Preview</h2>
 </div>
 );
     }
