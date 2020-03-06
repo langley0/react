@@ -3,7 +3,7 @@ import sandbox from "./sandbox";
 
 const styles = {
     pane: {
-        display: "flex",
+        flex: 1,
     },
     iframe: {
         width: "100%",

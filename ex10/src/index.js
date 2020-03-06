@@ -16,7 +16,6 @@ const styles = {
     pane: {
         display: "flex",
         flexDirection: "column",
-        height: "100%",
     },
 
     tabs: {
@@ -221,7 +220,7 @@ ReactDOM.render(
     render() {
         const { preview } = this.state;
         return (
-            <div>
+            <div style={{display: "flex", flexDirection:"column", position:"absolute", width:"100%", height: "100%"}}>
                 <EditorPane
                     files={this.files}
                     onChange={this.onChange.bind(this)} />

@@ -58,6 +58,7 @@
   font-weight: 500; 
   line-height: 1.6;
   font-family: "Source Code Pro", monospace;
+  height: 50vh;
 }
 
 .cm-s-oceanic div.CodeMirror-selected { background: rgba(101, 115, 126, 0.33); }
