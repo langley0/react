@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import sandbox from "./sandbox";
 
 const styles = {
     pane: {
@@ -25,7 +25,11 @@ export default class Preview extends React.Component {
             if (doc.body === null) {
                 setTimeout(tf.bind(this), 1);
             } else {
-                ReactDOM.render(React.createElement(this.props.app, null), doc.getElementById("root"));
+
+                //this.iframe.contentWindow.eval(this.props.code);
+                if(this.props.code) {
+                    this.iframe.contentWindow.postMessage({type:"execute", code: this.props.code })
+                }
             }
         }
         tf();
@@ -35,7 +39,10 @@ export default class Preview extends React.Component {
         const doc = this.iframe.contentWindow.document;
         doc.open();
         doc.write(this.props.html);
+        doc.write(`<script>(${sandbox.toString()})(); </script>`);
         doc.close();
+
+        this.renderFrame();
     }
 
     componentDidUpdate() {

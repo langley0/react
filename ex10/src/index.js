@@ -1,16 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import axios from "axios";
 
 import CodeMirror from "codemirror";
 import "codemirror/lib/codemirror.css";
 import "./oceanic.css";
-import "codemirror/mode/jsx/jsx.js"; 
+import "codemirror/mode/jsx/jsx.js";
 import "codemirror/mode/htmlmixed/htmlmixed.js";
 import "codemirror/addon/edit/matchtags.js";
 
-import { transform } from "@babel/core";
-import reset_react from "@babel/preset-react";
+import * as babel from "@babel/standalone";
 
 import Preview from "./preview";
 
@@ -20,7 +18,7 @@ const styles = {
         flexDirection: "column",
         height: "100%",
     },
-    
+
     tabs: {
         display: "flex",
         minHeight: 32,
@@ -30,7 +28,7 @@ const styles = {
 
     tabMenu: {
         display: "inline-flex",
-        padding : 8,
+        padding: 8,
     },
 
     tab: {
@@ -59,7 +57,7 @@ class Tabs extends React.Component {
     }
 
     render() {
-        const {items, selected } = this.props;
+        const { items, selected } = this.props;
         return (
             <div style={styles.tabs}>
                 <div style={styles.tabMenu}></div>
@@ -67,15 +65,15 @@ class Tabs extends React.Component {
                     items.map((v, i) => {
                         const tabStyle = {};
                         Object.assign(tabStyle, styles.tab);
-                        if (i === selected) { 
+                        if (i === selected) {
                             Object.assign(tabStyle, styles.tabSelected);
                         }
 
                         return (
-                            <div 
-                            style={tabStyle} 
-                            key={"tab-item-" + i} 
-                            onClick={this.onClick.bind(this, i, v)}
+                            <div
+                                style={tabStyle}
+                                key={"tab-item-" + i}
+                                onClick={this.onClick.bind(this, i, v)}
                             >{v}</div>
                         );
                     })
@@ -101,7 +99,7 @@ class EditorPane extends React.Component {
         this.codeMirror = CodeMirror(this.editor, {
             lineNumbers: true,
             theme: "oceanic",
-            matchTags: {bothTags: true},
+            matchTags: { bothTags: true },
             scrollbarStyle: "null",
         });
 
@@ -118,7 +116,7 @@ class EditorPane extends React.Component {
             this.codeMirror.setValue(file.value);
             this.codeMirror.setOption("mode", file.language);
 
-            return {selectedIndex: index};
+            return { selectedIndex: index };
         });
     }
 
@@ -126,30 +124,13 @@ class EditorPane extends React.Component {
         const { selectedIndex } = this.state;
         return (
             <div style={styles.pane}>
-                <Tabs items={this.props.files.map(v=>v.fileName)} 
+                <Tabs items={this.props.files.map(v => v.fileName)}
                     selected={selectedIndex}
-                    onSelect={this.onSelect.bind(this)}/>
-                <div ref={ref => this.editor=ref}>
+                    onSelect={this.onSelect.bind(this)} />
+                <div ref={ref => this.editor = ref}>
                 </div>
             </div>
         );
-    }
-}
-async function  loadJSFromUrl(url) {
-    const res = await axios.get(url);
-    return res.data;
-}
-
-async function loadLibrary() {
-
-    var LIBRARIES = {
-        React:  "https://unpkg.com/react@16/umd/react.development.js",
-        ReactDOM: "https://unpkg.com/react-dom@16/umd/react-dom.development.js",
-    }
-    
-    for(const library in LIBRARIES) {
-        const newFunc = await loadJSFromUrl(LIBRARIES[library]);
-        eval('const ' + library + ' = ' + newFunc);
     }
 }
 
@@ -157,15 +138,15 @@ class App extends React.Component {
     constructor(props) {
         super(props);
 
-        
 
-        
+
+
         this.files = [
-        { 
-            fileName: "index.js", 
-            language: "jsx",
-            value: 
-`
+            {
+                fileName: "index.js",
+                language: "jsx",
+                value:
+                    `
 class App extends React.Component {
 render() {
     return (
@@ -177,28 +158,34 @@ render() {
     }
 }
 
-
+ReactDOM.render(
+    (
+        <App />
+    ),
+    document.getElementById("root")
+);
 `
-        },
-        { 
-            fileName: "index.html" ,
-            language: "htmlmixed",
-            value: 
-`<!DOCTYPE html>
+            },
+            {
+                fileName: "index.html",
+                language: "htmlmixed",
+                value:`<!DOCTYPE html>
 <html>
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1">
-</head>
-<body >
-<div id="root"></div>
-</body>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1">
+        <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    </head>
+    <body >
+        <div id="root"></div>
+    </body>
 </html>
-`           
+`
             },
         ];
 
-        
+
         // 파일결과를 프리뷰에 넘겨준다
         this.state = {
             preview: {
@@ -212,48 +199,39 @@ render() {
 
 
     onChange(cm) {
-        if (this.libraryStatus === "completed") {
-            // 바로 eval 을 해도 된다
-            this.updateScript(cm.getValue());
-        } else if (!this.libraryStatus) {
-            this.libraryStatus = "loading";
-            
-            loadLibrary().then(() => {
-                this.libraryStatus = "completed";
-                this.updateScript(cm.getValue());
-            });
-        }
+        this.updateScript(cm.getValue());
     }
-
-    
 
     updateScript(script) {
         try {
-            const jsStr = transform("(" + script + ")", {presets:[reset_react]}).code;
-            const App = eval(jsStr); 
-            this.setState({ preview: { app: App}});
-        } catch(e) {
-            this.setState({ preview: { app: function() { return <div>{e.message}</div>; }}});
+
+            const babelConfig = {
+                presets: ["es2015", "react"],
+            }
+
+            const code = babel.transform(script, babelConfig).code;
+            this.setState({ preview: { code: code }});
+        } catch (e) {
+            this.setState({ preview: { app: function () { return <div>{e.message}</div>; } } });
         }
     }
 
     render() {
         const { preview } = this.state;
-        return(
+        return (
             <div>
-                <EditorPane 
-                files={this.files}
-                onChange={this.onChange.bind(this)}/>
-                <Preview html={preview.html} app={preview.app}/>
+                <EditorPane
+                    files={this.files}
+                    onChange={this.onChange.bind(this)} />
+                <Preview html={preview.html} code={preview.code} />
             </div>
         );
     }
 }
 
-
 ReactDOM.render(
     (
-        <App/>
+        <App />
     ),
     document.getElementById("root")
 );
