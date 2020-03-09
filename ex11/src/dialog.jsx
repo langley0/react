@@ -3,9 +3,7 @@ import React from "react";
 const styles = {
     panel: {
         position: "absolute",
-        display: "flex",
-        flexDirection: "column",
-        top: 90,
+        top: "15%",
         left: "50%",
         transform: "translate(-50%, -50%)",
         
