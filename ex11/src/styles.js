@@ -11,6 +11,7 @@ const styles = {
         padding: "5px 10px",
         cursor: "default",
         userSelect: "none",
+        width: 200,
 
         legend: {
             position: "absolute",

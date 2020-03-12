@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "./button";
 
 const styles = {
     panel: {
@@ -35,29 +36,35 @@ const styles = {
 
     button: {
         position: "relative",
-        textAlign: "center",
-        padding: "5px 10px",
         float: "left",
         marginLeft: 10,
         marginRight: 10,
         width: 122,
-        border: "1px solid #ddd",
-    }
+    },
+
+    buttonContainer: {
+        display: "flex",
+        justifyContent: "center",
+    },
 }
 
 export default class Dialog extends React.Component {
     render() {
         const { description, buttons } = this.props;
         const lines = description ? description.split("\n") : [];
-        console.log(lines, description);
+
         return (
         <div style={styles.screen}>
             <div style={styles.panel}>
                 <div>
                     { lines.map((value, index) => <div key={"line-"+index} style={styles.description} >{value}</div> )}
                 </div>
-                <div>
-                    { buttons &&  buttons.map((value, index) => (<div key={"dialog-button-"+ index} style={styles.button}>{value}</div>)) }
+                <div style={styles.buttonContainer}>
+                    { buttons &&  buttons.map((value, index) =><Button 
+                    key={"dialog-button-"+ index} 
+                    style={styles.button}
+                    name={value.name}
+                    onClick={value.onClick} />) }
                 </div>
             </div>
         </div>);

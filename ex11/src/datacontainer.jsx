@@ -31,8 +31,8 @@ class Row extends React.Component {
         <div style={styles.container.row}
         onMouseOver={this.showTooltip}
         onMouseOut={this.hideTooltip}>
-            <div style={styles.container.key}>{item}</div>
-            <div style={styles.container.value}>{0}</div>
+            <div style={styles.container.key}>{item.key}</div>
+            <div style={styles.container.value}>{item.value}</div>
             <div style={styles.container.clear} />
             { hovered ? <Tooltip/> : null }
         </div>);
@@ -42,15 +42,13 @@ class Row extends React.Component {
 export default class DataContainer extends React.Component {
 
     render() {
-        const {items} = this.props;
+        const {items, label} = this.props;
         return (
             <div style={styles.container}>
-                <div style={styles.container.legend}>Resources</div>
-                <div>
-                {
+                { label ? <div style={styles.container.legend}>{label}</div> : undefined }
+                <div>{
                     items && items.map((item, index)=> <Row key={"item-"+index} item={item}/>)
-                }
-                </div>
+                }</div>
             </div>);
     }
 }
