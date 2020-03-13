@@ -1,6 +1,19 @@
-import fields_data from "./fields";
+import DataContainer from "./datacontainer";
+
+import stages_data from "./stages";
 import resources_data from "./resources";
-import collections_data from "./collections";
+import buildings_data from "./buildings";
+import events_data from "./events";
+
+import Stage from "./stage";
+import Resource from "./resource";
+import Building from "./building";
+import WorkManager from "./workmanager";
+
+const Stages = new DataContainer();
+const Resources = new DataContainer();
+const Buildings = new DataContainer();
+const Events = new DataContainer();
 
 export default class Game {
     // field, resource, building, survivor, battle(enemy) 로 구성되어 있다
@@ -11,10 +24,13 @@ export default class Game {
             updateInterval: 1000,
         };
 
-        this.stages = {};
-        this.events = {};
+        this.workManager = new WorkManager();
 
-        this.userdata = null;
+        this.stages = new DataContainer();
+        this.events = new DataContainer();
+        this.resources = new DataContainer();
+        this.buildings = new DataContainer();
+        this.survivors = 1;
     }
 
     start() {
@@ -26,142 +42,51 @@ export default class Game {
     }
 
     load() {
-        this.collections = collections_data;
-        this.resources = resources_data;
-
-        this.loadStages();
-        this.loadEvents();
-        this.loadUserData();
+        Stages.add(stages_data);
+        Resources.add(resources_data);
+        Buildings.add(buildings_data);
+        Events.add(events_data)
     }
 
     loadUserData() {
-        this.userdata = {
-            survivor: 1,
-            stages: {},
-            works: [],
-            events: [],
-            collections: [],
-        }
     }
 
-    loadStages() {
-        // 나중에 asset 에서 비동기로 로딩하는 것으로 바꾸어야 한다.
-        // 지금은 다이렉트로 사용
-        fields_data.reduce((container, item) => {
-            container[item.id] = item;
-            return container;
-        }, this.stages);
-    }
-
-    loadEvents() {
-        this.events[1] = {
-            id: 1,
-            condition: null,
-            repeatable: false,
-            commands: [ 
-                ["journal", "Intro"],
-                ["addstage", 1],
-            ]
-        };
-
-        this.events[2] = {
-            id: 2,
-            condition: (userdata) => {
-                const target = userdata.stages[1];
-                return (target && target.visit > 0);
-            },
-            repeatable: false,
-            commands: [
-                ["journal", "Next Stage"],
-                ["addstage", 2],
-            ]
-        };
-    }
-
-    getAvailableStages() {
-        return Object.keys(this.userdata.stages).map(fid => this.stages[fid]);
+    getStages() {
+        return this.stages.toArray();
     }
 
     getAvailableSurvivors() {
-        const workingSurvivors =  this.userdata.works.reduce((count, action) => {
-            return count + action.survivors;
-        }, 0);
-        return this.userdata.survivor - workingSurvivors;
+        return this.survivors - this.workManager.getWorkerNumber();
     }
 
     update() {
-        this.updateWorks();
+        const now = Date.now();
+        this.workManager.update(now);
         this.updateEvent();
 
         this.timer = setTimeout(() => this.update(), this.config.updateInterval);
     }
 
-    updateWorks() {
-        const now = Date.now();
-        // 완료된 작업을 별도로 처리한다
-        const completedWorks = this.userdata.works.filter(item => item.end <= now);
-        
-        // 본작업에서 제거한다
-        completedWorks.forEach(work => {
-            const index = this.userdata.works.indexOf(work);
-            this.userdata.works.splice(index, 1);;
-        });
-        
-        // 완료 이벤트를 처리한다
-        completedWorks.forEach(work => {
-            this.onWorkCompleted(work);
-        });
-    }
-
-    onWorkCompleted(work) {
-        if (work.type === "explore") {
-            const sid = work.target;
-            const info = this.userdata.stages[sid];
-            info.visit = info.visit + 1;
-            
-            const stage = this.stages[sid];
-            const found = stage.collections.reduce((result, stageCollection) => {
-                if (Math.random() < stageCollection.rate) {
-                    // 리소스목록에 추가한다
-                    result.push({ 
-                        stage: sid,
-                        id: stageCollection.id, 
-                        expire: stageCollection.expire * 1000 + Date.now()
-                    });
-                    
-                    const collection = this.collections[stageCollection.id];
-                    this.notify(`[${collection.name}] 를 발견하여 지도에 기록하였습니다`);
-                }
-                return result;
-            }, []);
-
-            // 
-            this.userdata.collections.push(...found);
-
-            this.notify(`탐색을 완료하였습니다 : [${work.text}]`)
-        } else {
-            this.notify(`작업을 완료하였습니다 : [${work.text}]`)
-        }
-    }
-
     updateEvent() {
-        const events = [];
+        const invoked = [];
 
         // 트리거되는 이벤트를 찾는다
-        for(const evtid in this.events) {
-            const event = this.events[evtid];
-            if (event.condition === null || event.condition(this.userdata)) {
-                if (event.repeatable || this.userdata.events.indexOf(Number(evtid)) < 0) {
-                                events.push(event);
+        Events.forEach((event)=> {
+            if (event.repeatable || !this.events.exists(event.id)) {
+                if (!event.condition || event.condition(this)) {
+                    invoked.push(event);
                 }
             }
-        }
+        });
 
         // 이벤트에 해당하는 명령을 실행한다
-        events.forEach(event => {
-            if (!event.repeatable) {
-                this.userdata.events.push(event.id);
+        invoked.forEach(event => {
+            if (this.events.exists(event.id)) {
+                this.events.get(event.id).count ++;
+            } else {
+                this.events.add({id: event.id, count: 1});
             }
+            
             event.commands.forEach(command => this.executeCommand(...command));
         });
         
@@ -179,12 +104,26 @@ export default class Game {
             break;
             case "addstage": {
                 const sid = args[0];
-
-                const data = this.stages[sid];
-                if (!this.userdata.stages[sid]) {
-                    this.userdata.stages[sid] = { visit: 0 };
-                    this.notify(`새로운 장소를 발견하였습니다 : [${data.name}]`)
+                // 이미 스테이지를 가지고 있는지>
+                const data = Stages.get(sid);
+                if (data && !this.stages.exists(sid)) {
+                    this.stages.add(new Stage(data));
+                    this.notify(`새로운 장소를 발견하였다 : [${data.name}]`)
                 }
+            }
+            break;
+            case "addbuilding": {
+                const bid = args[0];
+                const data = Buildings.get(bid);
+                if (data && !this.buildings.exists(bid)) {
+                    this.buildings.add(new Building(data));
+                    this.notify(`새로운 건물을 발견하였다 : [${data.name}]`);
+                }
+            }
+            break;
+            case "addsurvivor": {
+                const count = args[0];
+                this.survivors += count;
             }
             break;
         }
@@ -195,28 +134,108 @@ export default class Game {
     }
 
     explore(sid) {
-        const stage = this.stages[sid];
+        const now = Date.now();
+
+        const stage = this.stages.get(sid);
+        if(stage === null || stage.isExploring()) {
+            return false;
+        }
+
+        const onComplete = () => {
+            const resources = stage.endExplore();
+            resources.forEach(res => {
+                const resource = this.resources.get(res.id);
+                if (resource) {
+                    resource.modify(res.count);
+                } else {
+                    const data = Resources.get(res.id);
+                    this.resources.add(new Resource(data, res.count));
+                }
+            });
+            
+            const rnames = [];
+            resources.forEach(res => {
+                const data = Resources.get(res.id);
+                rnames.push(data.name+"("+res.count+")");
+            });
+
+            this.notify(`[${stage.name}]에서 무언가를 찾았다. ${rnames.join(", ")}`)
+        };
 
         if (this.getAvailableSurvivors() >= stage.exploreRequired) {
             // 액션을 추가한다
-            const now = Date.now();
-            this.userdata.works.push({
-                type: "explore",
-                target: sid,
-                survivors: stage.exploreRequired,
-                start: now,
-                end: now + Math.floor(stage.exploreDuration * 1000),
+            const work = this.workManager.explore(
+                sid, 
+                stage.exploreRequired,
+                now, 
+                Math.floor(stage.exploreDuration * 1000),
+                onComplete)
 
-                text: `${stage.name} 탐색`,
-            });
-
-            // 이미 탐색중인 field 는 다시 탐색하지 않도록 한다
-            // start - finish 마크업을 해야할듯
+            stage.startExplore(work);
 
             return true;
         }
 
         return false;
+    }
+
+    canBuild(bid) {
+        const building = this.buildings.get(bid);
+        if (!building) { return false; }
+        if (building.onBuilding() || building.isBuilt())  { return false; }
+        
+        // 건물을 짓기위한 요구조건이 충족되는지 확인한다
+        const requiementOk = Array.from(building.requirement).every(item => {
+            // 여기서 요구조건 검사를 한다
+            return true;
+        });
+        if (!requiementOk) { return false; }
+        
+        // 자원이 있는지 확인한다
+        const resourcesOk = Array.from(building.getResources()).every(item => {
+            const myRes = this.resources.get(item.id)
+            if (myRes) {
+                return myRes.count >= item.count;
+            } else {
+                return false;
+            }
+        });
+        return resourcesOk;
+    }
+
+    build(bid) {
+        const now = Date.now();
+
+        // 건물을 짓는다
+        // 필요한 자원이 있는지 확인하고, 지을수 있다면 자원을 사용하여 건물을 짓는다
+        if (!this.canBuild(bid)) {
+            return false;
+        }
+        
+        // 작업을 진행한다
+        const building = this.buildings.get(bid);
+        if (this.getAvailableSurvivors() >= building.build.survivors) {
+            const onCompleted = () => {
+                building.endBuild();
+                this.notify(`건설을 완료하였다 : [${building.name}]`)
+            };
+
+            const work = this.workManager.build(
+                bid,
+                building.build.survivors,
+                now, 
+                Math.floor(building.build.duration * 1000),
+                onCompleted);
+
+            // 건설중 표시를 한다
+            building.startBuild(work);
+            // 자원을 제거한다
+            building.getResources().forEach(res => {
+                this.resources.get(res.id).modify(-res.count);
+            });
+
+            return true;
+        }
     }
 }
 

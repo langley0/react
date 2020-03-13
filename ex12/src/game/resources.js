@@ -1,9 +1,10 @@
-export default {
-    food: {
+export default [
+    {
+        id: "food",
         name: "식량",
     },
-
-    wood: {
-        name : "나무",
+    {
+        id: "wood",
+        name: "나무",
     }
-}
+]
