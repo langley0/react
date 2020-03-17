@@ -3,21 +3,27 @@ import Dispatcher from "./dispatcher";
 
 class Blackboard {
     public lastIf: boolean = false;
+    private data: any;
+
+    constructor(private dispatcher: Dispatcher) {
+        this.data = {};
+    }
 
     getValue(name: string): any {
-
+        return this.data[name];
     }
 
     setValue(name: string, value: any) {
-
+        this.data[name] = value;
+        this.dispatcher.dispatch("replace", { label: name, text: value });
     }
 
     setSeen(name:string) {
-
+        this.data[name] = true;
     }
 
     isSeen(name: string): boolean {
-        return false;
+        return this.data[name];
     }
 }
 
@@ -28,6 +34,11 @@ function startsWith(string: string, prefix: string): boolean {
 };
 
 class TextProcessor {
+
+    static process(text: string, data: Blackboard) {
+        const inst = new TextProcessor();
+        return inst.process(text, data);
+    }
    
     process(text: string, data: Blackboard) {
         let containUnprocessedSection = false;
@@ -68,12 +79,18 @@ class TextProcessor {
             const value = this.processTextCommand(section, data);
             text = text.substring(0, open) + value + this.process(text.substring(close + 1), data);
         }
+
+        return text;
     }
 
     
     processTextCommand(section: string, data: Blackboard) {
         if (startsWith(section, "if ")) {
             return this.processTextCommand_If(section, data);
+        } else if (startsWith(section, "else ")) {
+            throw new Error("not implemented yet");
+        } else if (startsWith(section, "label:")) {
+            return this.processTextCommand_Label(section, data);
         }
     }
 
@@ -123,15 +140,31 @@ class TextProcessor {
             return textResult;
         }
     }
+
+
+    processTextCommand_Label(section: string, data: Blackboard) {
+        const command = section.substring(6);
+        const eq = command.indexOf("=");
+        if (eq === -1) {
+            // label 만있는 경우이다. 그래도반환한다
+            return `{${section}}`;
+        }
+
+        const label = command.substring(0, eq);
+        const context = command.substring(eq + 1);
+
+        // 데이터를 기록하고 label 로 변경한다
+        data.setValue(label, this.process(context, data));
+        return `{label:${label}}`;
+    }
 }
 export default class Player {
     private section: Section | null = null;
     public dispatcher = new Dispatcher();
+    public data: Blackboard;
     
-    constructor(
-        private story: Story,
-        private data: Blackboard = new Blackboard()) {
-
+    constructor(private story: Story) {
+        this.data = new Blackboard(this.dispatcher);
 
         this.dispatcher.on("link", (data: {type: string, name: string}) => {
             if (data.type === "section") {
@@ -179,8 +212,9 @@ export default class Player {
     write(texts: string[]) {
         // 여기서 태그 프로세싱을 한다
         for(const text of texts) {
-            // 프로세싱이 필요
-            this.dispatcher.dispatch("write", text);
+            // 프로세싱을 하고 그결과를 넘겨준다
+            const processedText = TextProcessor.process(text, this.data);
+            this.dispatcher.dispatch("write", processedText);
         }
     }
 }

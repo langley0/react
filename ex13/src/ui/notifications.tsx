@@ -18,6 +18,7 @@ const notificationsStyle: CSS.Properties = {
 
 type Props = {
     dispatcher: any,
+    data: any,
 }
 
 type State = {
@@ -55,10 +56,10 @@ export default class Notifications extends React.Component<Props, State> {
     }
 
     onAdd(noti: string) {
-        const { dispatcher } = this.props;
+        const { dispatcher, data } = this.props;
         const { list } = this.state;
         ++this.nextIndex;
-        list.push(<Notification key={"notify-"+ this.nextIndex} context={noti} dispatcher={dispatcher}/>);
+        list.push(<Notification key={"notify-"+ this.nextIndex} context={noti} dispatcher={dispatcher} data={data}/>);
         while(list.length > 20) {
             list.shift();
         }

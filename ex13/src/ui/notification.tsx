@@ -1,5 +1,6 @@
 import React from "react";
 import LinkText from "./linktext";
+import LabelText from "./labeltext";
 
 const styles = {
     notification: {
@@ -10,6 +11,7 @@ const styles = {
 
 type Props = {
     dispatcher: any,
+    data: any,
     context: string,
 }
 
@@ -54,9 +56,41 @@ export default class Notification extends React.Component<Props, State> {
         }
     }
 
+    replaceLabel(expr: string) {
+        const regex = /^([\w]*)\s*=\s*(.*)$/;
+        const match = regex.exec(expr);
+        if (!match) { return null };
+
+        const label = match[1];
+        const text = match[2];
+
+        this.props.data.setValue(label, text);
+    }
+
     onClick(type: string, name: string) {
-        const { dispatcher } = this.props;        
-        dispatcher.dispatch("link", {type, name});
+        const { dispatcher } = this.props;
+        // processing 을 한다
+        const sections = name.split(",");
+        let target = name;
+        let first = true;
+        sections.forEach(section => {
+            section = section.trim();
+            if (section.indexOf("@replace") === 0) {
+                // label 을 교체한다
+                // label + context 로 분리한다
+                // attribte 설정과는 조금 다른가?
+                this.replaceLabel(section.substring(9));
+            } else {
+                if (first) {
+                    target = section;
+                } else {
+                    // attribute 설정으로 넘어간다
+                }
+            }
+            first = false;
+        });
+
+        dispatcher.dispatch("link", {type, target});
     }
 
     renderText(text: string) {
@@ -69,6 +103,8 @@ export default class Notification extends React.Component<Props, State> {
         const namedPassageLinkRegex  = /\[([^\]]*?)\]\((.*?)\)/;
         // [ + PASSAGE NAME + ]
         const unnamedPassageLinkRegex = /\[(.*?)\]/;
+        // {label: + LABEL }
+        const labelRegex = /{label:(.*?)}/;
 
         
         const result: React.ReactNode[] =[];
@@ -79,7 +115,8 @@ export default class Notification extends React.Component<Props, State> {
                 namedSectionLinkRegex.exec(text),
                 unnamedSectionLinkRegex.exec(text),
                 namedPassageLinkRegex.exec(text),
-                unnamedPassageLinkRegex.exec(text)
+                unnamedPassageLinkRegex.exec(text),
+                labelRegex.exec(text),
             ].reduce((prev, item, index, array) => {
                 if (prev) {
                     if (item) {
@@ -100,16 +137,23 @@ export default class Notification extends React.Component<Props, State> {
 
 
             if (regexResult) {
-                let linkType = selectedIndex < 2 ? "section" : "passage";
-                let linkName = regexResult[2] ? regexResult[2] : regexResult[1];
+                if (selectedIndex < 4) {
+                    let linkType = selectedIndex < 2 ? "section" : "passage";
+                    let linkName = regexResult[2] ? regexResult[2] : regexResult[1];
 
-                result.push(<span>{text.substring(0, regexResult.index)}</span>);
-                result.push(<LinkText onClick={() => { this.onClick(linkType, linkName); }}>{regexResult[1]}</LinkText>);
-                text = text.substring(regexResult.index + regexResult[0].length);
+                    result.push(<span key={"noti-key-"+ result.length}>{text.substring(0, regexResult.index)}</span>);
+                    result.push(<LinkText key={"noti-key-"+ result.length} onClick={() => { this.onClick(linkType, linkName); }}>{regexResult[1]}</LinkText>);
+                    text = text.substring(regexResult.index + regexResult[0].length);
+                } else if (selectedIndex === 4) {
+                    // 레이블
+                    result.push(<span key={"noti-key-"+ result.length}>{text.substring(0, regexResult.index)}</span>);
+                    result.push(<LabelText key={"noti-key-"+ result.length} label={regexResult[1]} data={this.props.data} dispatcher={this.props.dispatcher}/>);
+                    text = text.substring(regexResult.index + regexResult[0].length);
+                }
 
             } else {
                 // 나머지를 span 에 넣는다
-                result.push(<span>{text}</span>);
+                result.push(<span key={"noti-key-"+ result.length} >{text}</span>);
                 break;
             }
         }
