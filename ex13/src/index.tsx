@@ -1,44 +1,28 @@
-import "react";
+import React from "react";
 import ReactDOM from "react-dom";
-/*import Notifications from "./ui/notifications";
 
-import { compile } from "./compiler"
-import Player from "./player";*/
+import { compile } from "./story/compiler"
 
-import { parser } from "./parser";
+const story = compile(
+`[intro]:
+@title 어두운 방안
 
+눈을 떠보니 아무 무늬 없는 벽과 바닥이 보인다. 
+이런 이상한 곳에서 눈을 뜬 이유 따위는 생각나지 않는다. 
 
-/*const story = compile(
-`I walked to the shops and I bought {label:1=a pint of milk}. {label:2=a pint of milk}.
+정신을 차려보니 작은 [문]:(@set #1=저 문은 여기서 나가는 유일한 방법인 것 같다)이 하나 보인다. 
 
-Or maybe [I bought something different?](@replace 1=a loaf of bread)`);
-
-if (story) {
-    const player = new Player(story);
-    player.begin();
-
-
-    ReactDOM.render(<Notifications dispatcher={player.dispatcher} data={player.data}/>, document.getElementById("root"));
-}*/
-
-const story = parser(
-`[시작]:
-여기는 패러그래프 안입니다 [하이퍼링크]가 제대로 보이는지 확인
-다음 문장이 어떻게 보이는지 확인이 필요
-줄바꿈이 제대로 보이는가
-
-[하이퍼링크]:
-링크를 클릭하였습니다
-{@label:1=첫번째링크입니다}
-{@label:1}
-[이링크를 클릭하면 이동합니다]:(test-chapter)
-
-[test-chapter]:
-{@label:2=아래의 버튼을 클릭하면 바뀝니다}
-[버튼]:(@replace 2=다른글)
+{#1}
 `
 );
 
+//console.log(story);
+
 if (story) {
-    ReactDOM.render(story.render(), document.getElementById("root"));   
+    const main = (
+    <div style={{display:"flex", flexDirection:"column", alignItems:"center", userSelect:"none"}}>
+    <div style={{margin: 20, width: "700px"}}>
+        {story.render()}
+    </div></div>);
+    ReactDOM.render(main, document.getElementById("root"));   
 }
