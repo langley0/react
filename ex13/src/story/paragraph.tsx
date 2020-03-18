@@ -1,14 +1,14 @@
 import React from "react";
 import Node from "./node";
+import { dispatch, on, off } from "./dispatch";
 
 const listStyle = {
-    color: "#aaa",
+    color: "#faa",
     cursor: "pointer",
 };
 
 const listHoverStyle = {
-    color: "#fff",
-    
+    textDecoration: "underline",
 }
 class ParagraphItem extends React.Component<{onClick:()=>void}, { hover: boolean}> {
     constructor(props: any) {
@@ -32,7 +32,7 @@ class ParagraphItem extends React.Component<{onClick:()=>void}, { hover: boolean
             style = Object.assign(style, listHoverStyle);
         }
         return (
-            <div style={{ marginTop: 10, marginLeft: 15 }}>
+            <div style={{ marginTop: 40 }}>
             <span style ={style}
             onClick={onClick}
             onMouseOver={this.onMouseOver.bind(this)}
@@ -44,12 +44,42 @@ class ParagraphItem extends React.Component<{onClick:()=>void}, { hover: boolean
 }
 
 type Props =  {
+    model: Paragraph,
     list: { label:Node, onClick: ()=>void }[],
     title: string,
 };
 
-class ParagraphView extends React.Component<Props> {
+type State = {
+    invalidated: boolean,
+}
+
+class ParagraphView extends React.Component<Props, State> {
+    constructor(props: Props) {
+        super(props);
+
+        this.state = {
+            invalidated: false,
+        };
+
+        this.forceUpdate = this.forceUpdate.bind(this);
+    }
+
+    forceUpdate() {
+        this.setState((prev) => {
+            return { invalidated: !prev.invalidated };
+        });
+    }
+    
+    componentDidMount() {
+        on("update(paragraph)", this.forceUpdate);
+    }
+
+    componentWillUnmount() {
+        off("update(paragraph)", this.forceUpdate);
+    }
     render() {
+        console.log('render paragraph');
+
         const { children, list, title }  = this.props;
         if (children) {
             return (<React.Fragment>
@@ -82,6 +112,7 @@ export default class Paragraph extends Node {
 
     addListItem(label: Node, onClick: ()=>void) {
         this.list.push({ label, onClick });
+        dispatch("update(paragraph)");
     }
 
     addAction(action: ActionFunction) {
@@ -93,7 +124,7 @@ export default class Paragraph extends Node {
         this.actions.forEach(action => action(this));
 
         // render 객체를 반환한다
-        return <ParagraphView title={this.title} list={this.list}>{ 
+        return <ParagraphView model={this} title={this.title} list={this.list}>{ 
             this.children.map((child, index)=>child.render("node-key-"+ index)) }
             </ParagraphView>;
     }

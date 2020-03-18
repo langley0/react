@@ -45,32 +45,62 @@ function parseNode(text: string): Node {
     }
 }
 
-function parseLinkAction(text: string): () => void {
+function parseLinkAction(text: string, parent?: Node): () => void {
     text = text.trim();
-    if (text.startsWith("@set")) {
-        // 변수 설정이다
-        const match = /^@set\s*#([\w]*)?\s*=\s*(.*)?$/.exec(text);
-        if (match) {
-            const id = match[1];
-            const value = match[2];
-            const eventName = "replace("+id + ")";
-            return () => { 
-                dispatch(eventName, value); 
-            };
-        } 
+    const result: any[] = [];
 
-        return () => {};
-    } else {
-        // 단순링크이다
-        const node = parseNode(text);
-        return () => {
-            console.log("click", text);
-            const target = node.getText();
-            if (target) {
-                dispatch("paragraph", target);
+    text.split(",").forEach(text => {
+        text = text.trim();
+        if (text.startsWith("@set")) {
+            // 변수 설정이다
+            const match = /^@set\s*#([\w]*)?\s*=\s*(.*)?$/.exec(text);
+            if (match) {
+                const id = match[1];
+                const value = match[2];
+                const eventName = "replace("+id + ")";
+                result.push(() => { 
+                    dispatch(eventName, value); 
+                });
+            } 
+        }  else if (text.startsWith("@select")) {
+            // 패러그래프에 select 함수를 추가한다
+            const match = /^\[(.*)?\]:\((.*)?\)$/.exec(text.substring(7).trim());
+            console.log(match);
+            if (match) {
+                const label = parseNode(match[1]);
+                const onClick = parseLinkAction(match[2]);
+                result.push(function () {
+                    (parent as Paragraph).addListItem(label, onClick);
+                });
             }
+        }
+        else {
+            // 단순링크이다
+            const node = parseNode(text);
+            result.push(() => {
+                console.log("click", text);
+                const target = node.getText();
+                if (target) {
+                    dispatch("paragraph", target);
+                }
+            });
+        }
+    });
+
+    if (result.length === 0) {
+        return () => {};
+    }
+    else if (result.length === 1) {
+        return result[0];
+    } else {
+        // 액션리스트 전체를 실행하는 함수를 만든다
+        return function () {
+            result.forEach(action => {
+                action();
+            });
         };
     }
+    
 }
 
 function compileText(node: Node, text: string) {
@@ -107,10 +137,25 @@ function compileText(node: Node, text: string) {
             if (text[end + 1] === ":") {
                 // () 를 찾는다
                 // 원래는 nest 를 찾아야 하는데 일단 귀찬으니 패스
+                let nestCount = 1;
                 begin = text.indexOf("(", end + 1) + 1;
-                end = text.indexOf(")", begin);
+                end = begin + 1;
+                while(end < text.length) {
+                    const posAt = text.charAt(end);
+                    if (posAt === "(") {
+                        ++nestCount;
+                    } else if (posAt === ")") {
+                        --nestCount;
+                        if (nestCount === 0) {
+                            break;
+                        }
+                    }
+                    ++end;
+                }
 
-                const clickAction = parseLinkAction(text.substring(begin, end));
+                const actionStr= text.substring(begin, end);
+                console.log(actionStr);
+                const clickAction = parseLinkAction(text.substring(begin, end), node);
                 const link = new Hyperlink(label, clickAction);
                 node.addNode(link);
             } else {
