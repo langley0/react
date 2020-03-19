@@ -78,8 +78,6 @@ class ParagraphView extends React.Component<Props, State> {
         off("update(paragraph)", this.forceUpdate);
     }
     render() {
-        console.log('render paragraph');
-
         const { children, list, title }  = this.props;
         if (children) {
             return (<React.Fragment>

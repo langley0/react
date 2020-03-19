@@ -37,7 +37,6 @@ export class StoryView extends React.Component<Props, State> {
         const { paragraphName } = this.state;
         const { story } = this.props;
         const paragraph = story.getParagraph(paragraphName);
-        console.log(paragraphName, paragraph);
         return paragraph.render();
     }
 }
@@ -54,7 +53,6 @@ export default class Story {
     }
 
     getFirstParagraph(): string {
-        console.log(this.paragraphes, Object.keys(this.paragraphes));
         return Object.keys(this.paragraphes)[0] || "";
     }
 

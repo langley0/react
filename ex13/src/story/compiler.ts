@@ -65,7 +65,6 @@ function parseLinkAction(text: string, parent?: Node): () => void {
         }  else if (text.startsWith("@select")) {
             // 패러그래프에 select 함수를 추가한다
             const match = /^\[(.*)?\]:\((.*)?\)$/.exec(text.substring(7).trim());
-            console.log(match);
             if (match) {
                 const label = parseNode(match[1]);
                 const onClick = parseLinkAction(match[2]);
@@ -78,7 +77,6 @@ function parseLinkAction(text: string, parent?: Node): () => void {
             // 단순링크이다
             const node = parseNode(text);
             result.push(() => {
-                console.log("click", text);
                 const target = node.getText();
                 if (target) {
                     dispatch("paragraph", target);
@@ -153,8 +151,6 @@ function compileText(node: Node, text: string) {
                     ++end;
                 }
 
-                const actionStr= text.substring(begin, end);
-                console.log(actionStr);
                 const clickAction = parseLinkAction(text.substring(begin, end), node);
                 const link = new Hyperlink(label, clickAction);
                 node.addNode(link);

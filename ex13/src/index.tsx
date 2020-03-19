@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import { compile } from "./story/compiler"
+import VM from "./vm"
+import Story from  "./story";
 
 const story = compile(
 `[intro]:
@@ -32,3 +34,21 @@ if (story) {
     </div></div>);
     ReactDOM.render(main, document.getElementById("root"));   
 }
+
+const vm = new VM();
+vm.regFunc("@title", (title: string) => {
+    console.log("set title to `" + title +"`");
+});
+//console.log(vm.eval(`@title("this is title")`));
+
+const st = new Story();
+st.compile(
+`[[intro]]
+여기는 어디인가. 난 누군가 {a}를 여시오!!!
+*이문장은 강조 문장입니다* 여기는 아닙니다 \`이탤릭도 있습니다 {스크립트도 먹힙니다}\`
+브라킷을 치면 링크도 된다 [링크] , 페이지 전환도 됩니다 [[페이지]]
+타겟 별도 지정도 됩니다 [링크](진짜링크) 이렇게..
+`);
+
+
+

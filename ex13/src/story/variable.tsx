@@ -30,7 +30,6 @@ class VariableUI extends React.Component<Props, State> {
     }
 
     componentDidMount() { 
-        console.log("event register", this.eventName);
         on(this.eventName, this.onAttributeChanged);
     }
 
@@ -59,7 +58,6 @@ export default class Variable extends Node {
     }
   
     render(key?: string) {
-        console.log(this.id, this.value);
         if (this.value) {
             // set value
             const result =  this.value; // 나중에 exrpession 으로 고친다
