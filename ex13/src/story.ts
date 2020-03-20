@@ -87,6 +87,12 @@ class Lexer {
             } else if (this.char === "`") {
                 this.advance();
                 return new Token(TokenType.GRAVE, "`");
+            } if (this.char === "(") {
+                this.advance();
+                return new Token(TokenType.LPAREN, "(");
+            } if (this.char === ")") {
+                this.advance();
+                return new Token(TokenType.RPAREN, ")");
             } else {
                 // 단어를 읽는다 white space 까지 모두 포함해서 읽어야 한다
                 return this.getString();  
@@ -308,6 +314,8 @@ class Parser {
     }
 }
 
+//[link](target) 을 컴파일할 방법을 찾아야 한다. () 가 일반적으로는 그냥 쓰이는데 link 에서만 특별한 의미를 가지도록 할 수 있을까?
+// 아니면 () 차제는 특별하게 처리하고 가야 할수도 있다
 
 export default class story {
     compile(text: string) {
