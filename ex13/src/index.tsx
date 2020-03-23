@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import { compile  } from  "./markdown";
-import { Story } from "./markdown/page";
+import { compile  } from  "./compile";
+import { Story } from "./component";
 import VM from "./vm";
 
 const story = compile(`

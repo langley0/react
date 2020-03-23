@@ -1,7 +1,7 @@
 import React from "react";
 import Node from "./node";
-import { dispatch, on, off } from "../story/dispatch";
-import VM from "../vm";
+import { dispatch, on, off } from "./dispatch";
+import VM from "./vm";
 
 
 class Link extends React.Component<{src: Node}, {clicked: boolean}> {
