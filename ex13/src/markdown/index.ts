@@ -1,8 +1,4 @@
 import Node from "./node";
-import { renderPage } from "./render";
-
-export const render = renderPage;
-
 
 const blockRules = {
     page: /^\[\[\s*(.*)\s*\]\]\s*$/, // [[ PAGE NAME ]]
@@ -15,7 +11,7 @@ const blockRules = {
 
 const inlineRules = {
     escape: /^\\([!"#$%&'()*+,\-./:;<=>?@[\]\\^_`{|}~])/,
-    link: /^\[\s*(.*)\s*\]\s*\(\s*(.*)\s*\)/, // 텍스트 
+    link: /^\[\s*(.*?)\s*\]\s*\(\s*(.*?)\s*\)/, // 텍스트 
     embed:  /^\{\s*([^}]+)\s*\}/, // { 코드 블럭 } , 코드 실행결과를 출력한다
     strong: /^\*\*(([^*])([^*]|\*[^*])*?)\*\*(?!\*)/,
     em: /^\*(([^*])([^*]|(\*\*))*?)\*(?!\*)/,
@@ -30,8 +26,6 @@ function parseRules(regex: { [key: string]: RegExp }, inputText: string) {
     }
     return result;
 }
-
-
 
 
 function parseText(parent: Node, src: string) {
@@ -54,7 +48,9 @@ function parseText(parent: Node, src: string) {
             src = src.substring(match.escape[0].length);
         } else if (match.link) {
             addText();
-            parent.children.push(new Node("link", match.link[1] +"=>" + match.link[2]));
+            const link = new Node("link", match.link[1]);
+            link.attributes["target"] = match.link[2];
+            parent.children.push(link);
             src = src.substring(match.link[0].length);
         } else if (match.embed) {
             addText();
@@ -155,7 +151,8 @@ export function compile(src: string) {
         else if (match.select) {
             addParagraph();
             if (block) {
-                const select = new Node("select", match.select[1] + "TO" + match.select[2]);
+                const select = new Node("select", match.select[1]);
+                select.attributes["target"] = match.select[2];
                 block.children.push(select);
             }
         }

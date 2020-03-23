@@ -1,5 +1,7 @@
 export default class Node {
     public children: Node[] = [];
+    public attributes:{[key:string]: string } = {}
+    
     constructor(public type: string, public value: string) {}
 
     toString(indent: string = "") {
